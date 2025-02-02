@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { formatDate } from '../lib/formatters';
-import { deleteJob as deleteJobRe } from '../lib/graphql';
+import { deleteJob as deleteJobRe } from '../lib/graphQl/graphql';
 
 function JobList({ jobs }) {
   return (
@@ -15,8 +15,15 @@ function JobList({ jobs }) {
 function JobItem({ job }) {
 
   const deleteJob=async(job)=>{
-  let {title} = await deleteJobRe(job?.id)
-alert("job deleted " +title )
+    try{
+      let {title} = await deleteJobRe(job?.id)
+      alert("job deleted " +title )
+    }
+    catch(err){
+    
+      alert(err.message)
+    }
+  
   }
 
   const title = job.company

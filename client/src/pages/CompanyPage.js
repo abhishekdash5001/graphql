@@ -1,6 +1,6 @@
 import { useParams } from 'react-router';
 import { useEffect, useState } from 'react';
-import {getCompany} from "../lib/graphql";
+import {getCompany} from "../lib/graphQl/graphql";
 import JobList from '../components/JobList';
 function CompanyPage() {
   const { companyId } = useParams();

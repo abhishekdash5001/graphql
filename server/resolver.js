@@ -6,6 +6,7 @@ export const resolvers = {
     Query: {
         jobs: async () => await getJobs(),
         job: async (root, args) => {
+            console.log("getting jobs")
             let a = await getJob(args.id)
             return a
 
@@ -46,25 +47,36 @@ export const resolvers = {
    }
     },
     Mutation: {
-        createJob: async (_, { title, description }) => {  
-            let companyId = 'FjcJCHJALA4i';
+        createJob: async (_,{title,description},{user}) => {  
+
+           if(!user){
+            HandleError("User not authorised")
+           }else{
+
             try {
-                let job = await createJob({ companyId, title, description });
+                let job = await createJob({ companyId:user.companyId, title, description });
                 return job
             }
             catch (e) {
                 HandleError(e)
             }
+           }
+            
 
 
         },
-        deleteJob:async(_,{id})=>{
-            try{
-                let job = await deleteJob(id);
-                return job
-            }catch(e){
-                HandleError(e)
+        deleteJob:async(_,{id},{user})=>{
+            if(user){
+                try{
+                    let job = await deleteJob(id);
+                    return job
+                }catch(e){
+                    HandleError(e)
+                }
+            }else{
+                HandleError("User not authorised") 
             }
+           
     
 
         },

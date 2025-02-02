@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react';
-import { createJob,updateJob } from '../lib/graphql';
-
+import { createJob,updateJob } from '../lib/graphQl/graphql';
+import { useNavigate } from "react-router-dom";
 
 function CreateJobPage({type="create",titleC='',descriptionC='',idC}) {
 
   const [title, setTitle] = useState(titleC);
   const [description, setDescription] = useState(descriptionC);
+  let navigate = useNavigate();
+
 
   useEffect(()=>{
  console.log(titleC)
@@ -14,9 +16,9 @@ function CreateJobPage({type="create",titleC='',descriptionC='',idC}) {
 
     event.preventDefault();
     if(type === "create"){
-      let {id}=  await  createJob( { title, description });
+      let {id}=  await  createJob( title, description );
+   navigate(`/jobs/${id}`);
 
-      alert("job created with id " +id)
     }else{
       let {id}=  await  updateJob( idC,title, description );
       alert("job updated with id " +id)
