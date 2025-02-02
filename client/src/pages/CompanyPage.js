@@ -1,18 +1,38 @@
 import { useParams } from 'react-router';
-import { companies } from '../lib/fake-data';
-
+import { useEffect, useState } from 'react';
+import {getCompany} from "../lib/graphql";
+import JobList from '../components/JobList';
 function CompanyPage() {
   const { companyId } = useParams();
+  let [company,setCompany]= useState({});
+  useEffect(()=>{
+  fetchCompany();
+  },[companyId])
 
-  const company = companies.find((company) => company.id === companyId);
+  async function fetchCompany(){
+   let a = await  getCompany(companyId);
+   console.log(a)
+setCompany(a)
+  }
+
+
   return (
     <div>
       <h1 className="title">
-        {company.name}
+        {company?.name}
       </h1>
       <div className="box">
-        {company.description}
+        {company?.description}
       </div>
+      <h3>
+        Jobs At {company?.name}
+        
+      </h3>
+      <p>
+        {company?.jobs ?   <JobList jobs={company?.jobs} />:null}
+     
+        
+      </p>
     </div>
   );
 }

@@ -1,0 +1,1 @@
+in gql to write data we need mutation

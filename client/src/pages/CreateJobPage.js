@@ -1,12 +1,28 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { createJob,updateJob } from '../lib/graphql';
 
-function CreateJobPage() {
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
 
-  const handleSubmit = (event) => {
+function CreateJobPage({type="create",titleC='',descriptionC='',idC}) {
+
+  const [title, setTitle] = useState(titleC);
+  const [description, setDescription] = useState(descriptionC);
+
+  useEffect(()=>{
+ console.log(titleC)
+  },[titleC,descriptionC])
+  const handleSubmit = async (event) => {
+
     event.preventDefault();
-    console.log('should post a new job:', { title, description });
+    if(type === "create"){
+      let {id}=  await  createJob( { title, description });
+
+      alert("job created with id " +id)
+    }else{
+      let {id}=  await  updateJob( idC,title, description );
+      alert("job updated with id " +id)
+    }
+
+    
   };
 
   return (

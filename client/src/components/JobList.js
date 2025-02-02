@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { formatDate } from '../lib/formatters';
+import { deleteJob as deleteJobRe } from '../lib/graphql';
 
 function JobList({ jobs }) {
   return (
@@ -12,6 +13,12 @@ function JobList({ jobs }) {
 }
 
 function JobItem({ job }) {
+
+  const deleteJob=async(job)=>{
+  let {title} = await deleteJobRe(job?.id)
+alert("job deleted " +title )
+  }
+
   const title = job.company
     ? `${job.title} at ${job.company.name}`
     : job.title;
@@ -24,6 +31,9 @@ function JobItem({ job }) {
         <Link to={`/jobs/${job.id}`}>
           {title}
         </Link>
+      </div>
+      <div onClick={()=>deleteJob(job)}>
+        Delete
       </div>
     </li>
   );
